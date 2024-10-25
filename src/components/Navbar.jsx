@@ -24,7 +24,7 @@ export default async function Navbar() {
 
   const links = [
     { name: "Home", href: "/" },
-    { name: "Our-story", href: "/Our-story" },
+    { name: "Our-story", href: "/our-story" },
   
   ];
 

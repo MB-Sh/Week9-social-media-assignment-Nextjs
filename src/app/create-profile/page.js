@@ -20,13 +20,21 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation"; 
 import { auth } from "@clerk/nextjs/server";
 
-export default function CreateProfilePage() {
+export default async function CreateProfilePage() {
   // Handle form submission to the database
   async function handleSubmit(formValues) {
     "use server"; // Use server actions in Next.js
 
     // Extract current userId from Clerk
     const { userId } = auth();
+    console.log("User ID:", userId);
+
+    if (!userId) {
+      console.error("User ID is null or undefined");
+      // Optionally redirect to a login page or show an error message
+      redirect("/sign-in");
+      return;
+    }
 
     
     const formData = {
@@ -37,9 +45,9 @@ export default function CreateProfilePage() {
 
     console.log(formData); 
 
-    // Insert the user profile data into the "user" table in the database
+    
     await db.query(
-      `INSERT INTO user (clerk_id, username, profile_image_url, bio)
+      `INSERT INTO users (clerk_id, username, profile_image_url, bio)
        VALUES ($1, $2, $3, $4)`,
       [userId, formData.username, formData.profile_image_url, formData.bio]
     );

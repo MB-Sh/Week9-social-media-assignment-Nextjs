@@ -9,10 +9,10 @@ export default function AboutPage() {
         Welcome to our blog! We aim to provide insightful content on a variety of topics.
       </p>
 
-      {/* Popover Component */}
+      
       <Popover>
         <PopoverTrigger asChild>
-          {/* Button to trigger the popover */}
+          
           <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
             More about us
           </button>

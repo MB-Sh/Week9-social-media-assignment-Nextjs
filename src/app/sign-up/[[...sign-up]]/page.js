@@ -21,13 +21,13 @@ async function handleUserSignUp() {
            VALUES ($1, $2, $3, $4)`,
           [userId, 'NewUser', 'https://example.com/default-profile.jpg', 'New user bio'] // Default values
         );
-        console.log("New user inserted into the database.");
+        console.log("New user add.");
       } else {
-        console.log("User already exists in the database.");
+        console.log("User already exists.");
       }
 
     } catch (error) {
-      console.error("Error inserting user into the database:", error);
+      console.error("Error adding user:", error);
     }
   }
 }
@@ -37,10 +37,10 @@ export default async function SignUpPage() {
   await handleUserSignUp();
 
   return (
-    <>
+    <div className="flex items-center justify-center p-3">
       <h1>Sign-up to access this page</h1>
       {/* Render the Clerk SignUp component with afterSignUpUrl to redirect */}
       <SignUp forceRedirectUrl="/create-profile" />
-    </>
+    </div>
   );
 }

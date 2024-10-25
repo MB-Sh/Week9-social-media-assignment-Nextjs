@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, ClerkLoading, ClerkLoaded} from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
+import Loader from "@/components/Loader";
 
 
 const inter = Inter({
@@ -20,9 +21,14 @@ export default function RootLayout({ children }) {
       <body
         className={inter.className}
       >
+        <ClerkLoading>
+          <Loader/>
+        </ClerkLoading> 
+        <ClerkLoaded>
         <Navbar/>
         
         {children}
+        </ClerkLoaded>
       </body>
     </html>
     </ClerkProvider>
