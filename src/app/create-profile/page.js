@@ -5,7 +5,8 @@
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { handleSubmit } from "@/app/create-profile/action";
+import { handleSubmit } from "@/app/create-profile/action"; 
+
 
 export default function CreateProfilePage() {
   const { isSignedIn } = useAuth();
