@@ -40,6 +40,7 @@ export async function handleSubmit(formData) {
 
   try {
     // Insert data into the database
+    console.log(userId,username)
     await db.query(
       `INSERT INTO users (clerk_id, username, profile_image_url, bio)
        VALUES ($1, $2, $3, $4)`,
