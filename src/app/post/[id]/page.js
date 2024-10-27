@@ -1,54 +1,55 @@
 
+import { auth } from "@clerk/nextjs/server";
+import { db } from "@/utils/dbConnection";
+import Image from "next/image";
+import { redirect } from "next/navigation";
+import BackButton from "@/components/BackButton";
+import ErrorPage from "@/components/ErrorPage";
 
-// // export default async function PostPage({ params }) {
-// //   let post = null;
+export default async function PostIdPage({ params }) {
+  const { userId } = await auth(); 
+  const postId = await params.id; 
 
-// //   try {
-// //     const response = await fetch(process.env.NEXT_PUBLIC_URL + "/api/post/get", {
-// //       method: "POST",
-// //       body: JSON.stringify({ postId: params.id }),
-// //       cache: "no-store",
-// //     });
-// //     post = await response.json();
-// //   } catch (error) {
-// //     console.error("Error fetching post:", error);
-// //     post = { text: "Failed to load post" };
-// //   }
+  // Query to fetch post details by ID
+  const post = await db.query(
+    `SELECT post.*, users.username, users.profile_image_url 
+     FROM post 
+     JOIN users ON post.up_clerk_id = users.clerk_id 
+     WHERE post.id = $1`, [postId]
+  );
 
-// //   return (
-// //     <div className="max-w-xl mx-auto border-r border-l min-h-screen">
-// //       <div className="flex items-center space-x-2 py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
-// //         <Link href="/" className="hover:bg-gray-100 rounded-full p-2">
-          
-// //         </Link>
-// //         <h2 className="sm:text-lg">Back</h2>
-// //       </div>
+  const postData = post.rows[0];
 
-// //       {!post && <h2 className="text-center mt-5 text-lg">Post not found</h2>}
+  
+  if (!postData) {
+    return <ErrorPage/>
+  }
 
-// //       {post && <Post post={post} />}
-      
-// //     </div>
-// //   );
-// // }
-// export default async function PostPage({ params }) {
-//   const res = await fetch('/api/post/get', {
-//     method: 'POST',
-//     body: JSON.stringify({ postId: params.id }),
-//     cache: 'no-store',
-//   });
-//   const post = await res.json();
+  const userProfile = await db.query(
+    `SELECT * FROM users WHERE clerk_id = $1`, [postData.up_clerk_id]
+  );
 
-//   return (
-//     <div>
-//       {post ? (
-//         <>
-//           <h1>{post.title}</h1>
-//           <p>{post.content}</p>
-//         </>
-//       ) : (
-//         <p>Post not found</p>
-//       )}
-//     </div>
-//   );
-// }
+  if (userProfile.rows.length === 0) return redirect("/create-profile");
+
+  return (
+    <div>
+      <div className="user-profile">
+        <Image
+          src={userProfile.rows[0].profile_image_url}
+          alt="Profile"
+          width={150}
+          height={150}
+        />
+        <h1>{userProfile.rows[0].username}</h1>
+        <p>{userProfile.rows[0].bio}</p>
+      </div>
+
+      <div className="post-detail">
+        <h2>{postData.title}</h2>
+        <p>{postData.content}</p>
+        <p>Posted by: {postData.username}</p>
+      </div>
+      <BackButton/>
+    </div>
+  );
+}

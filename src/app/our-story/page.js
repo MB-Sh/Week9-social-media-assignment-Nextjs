@@ -2,17 +2,14 @@ import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold my-4">About Page</h1>
-
-      <p className="text-lg">
+      <p className="text-lg text-gray-700">
         Welcome to our blog! We aim to provide insightful content on a variety of topics.
       </p>
 
-      
       <Popover>
         <PopoverTrigger asChild>
-          
           <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
             More about us
           </button>
@@ -22,9 +19,9 @@ export default function AboutPage() {
           align="center"
         >
           <h2 className="text-xl font-semibold">Our Mission</h2>
-          <p className="text-sm mt-2">
+          <p className="text-sm text-gray-600 mt-2">
             We strive to deliver high-quality content to inspire, educate, and inform our readers.
-            Whether  technology, lifestyle, or personal development, we are here to share what matters most.
+            Whether it&apos;s technology, lifestyle, or personal development, we are here to share what matters most.
           </p>
           <a
             href="/our-story"
@@ -34,6 +31,6 @@ export default function AboutPage() {
           </a>
         </PopoverContent>
       </Popover>
-    </>
+    </div>
   );
 }

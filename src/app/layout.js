@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider, ClerkLoading, ClerkLoaded} from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
 import Loader from "@/components/Loader";
+import Footer from "@/components/Footer";
 
 
 const inter = Inter({
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         
         {children}
         </ClerkLoaded>
+        <Footer/>
       </body>
     </html>
     </ClerkProvider>

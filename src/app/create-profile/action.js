@@ -1,4 +1,3 @@
-// app/create-profile/actions.js
 
 "use server";
 
@@ -11,21 +10,20 @@ import { redirect } from "next/navigation";
 import { auth, currentUser } from '@clerk/nextjs/server'
 
 export default async function Page() {
-  // Get the userId from auth() -- if null, the user is not signed in
+  // Get the userId from auth() 
   const { userId } = await auth()
 
   console.log(userId)
 
-  // Get the Backend API User object when you need access to the user's information
   const user = await currentUser()
-  // Use `user` to render user details or create UI elements
+  // Use `user` to render user details 
 }
 
 export async function handleSubmit(formData) {
-  const { userId } = await auth(); // Fetch user ID from Clerk
+  const { userId } = await auth(); 
 
   console.log(userId)
-  // Log the userId to verify it’s being retrieved
+  
   console.log("Retrieved User ID:", userId);
 
   if (!userId) {
@@ -47,9 +45,13 @@ export async function handleSubmit(formData) {
       [userId, username, profileImageUrl, bio]
     );
 
-    // Revalidate the path and redirect
-    revalidatePath(`/profile/${userId}`);
-    redirect("/");
+    
+    revalidatePath(`/post`);
+     redirect(`/post`);
+    // revalidatePath (`/post/${userId}`);
+    // redirect (`/post/${userId}`);
+
+    // redirect("/");
   } catch (error) {
     console.error("Error inserting profile data:", error);
   }
