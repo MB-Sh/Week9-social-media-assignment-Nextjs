@@ -32,8 +32,8 @@ export default async function Navbar() {
     <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-4 sticky top-0 z-50 shadow-lg text-white flex justify-between items-center">
       
       <div className="flex gap-5">
-        {links.map((link, index) => (
-          <div key={index} className="transform transition-transform hover:scale-110 active:scale-95">
+        {links.map((link) => (
+          <div key={link.name} className="transform transition-transform hover:scale-110 active:scale-95">
             <Link href={link.href} className="hover:text-yellow-300 transition-colors">
               {link.name}
             </Link>
@@ -43,12 +43,11 @@ export default async function Navbar() {
         
         <SignedIn>
           <div className="transform transition-transform hover:scale-110 active:scale-95">
-            <Link
-              href={hasProfile ? "/Post" : "/create-profile"}
-              className="hover:text-yellow-300 transition-colors"
-            >
-              Post
-            </Link>
+          {hasProfile ? (
+            <Link href="/post">Post</Link>
+          ) : (
+            <Link href="/create-profile">Create Profile</Link>
+          )}
           </div>
         </SignedIn>
       </div>

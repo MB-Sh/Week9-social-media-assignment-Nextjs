@@ -42,33 +42,34 @@ import Image from 'next/image';
 //   );
 // }
 
-export default async function UserProfilePage({ params }) {
-  const res = await fetch(`/api/users/get`, {
-    method: 'POST',
-    body: JSON.stringify({ username: params.username }),
-    cache: 'no-store',
-  });
-  const dbUser = await res.json();
+import { db } from '@/utils/dbConnection';
 
-  const postsRes = await fetch('/api/post/get', {
-    method: 'POST',
-    body: JSON.stringify({ clerk_id: dbUser.clerk_id }),
-    cache: 'no-store',
-  });
-  const posts = await postsRes.json();
+export async function getServerSideProps({ params }) {
+  const userId = params.userId;
+  const { rows: userPosts } = await db.query(
+    `SELECT * FROM post WHERE up_clerk_id = $1 ORDER BY created_at DESC`,
+    [userId]
+  );
 
+  return {
+    props: {
+      userPosts,
+    },
+  };
+}
+
+export default function UserProfile({ userPosts }) {
   return (
-    <div>
-      <Image src={dbUser.profile_image_url} alt="Profile" />
-      <h1>{dbUser.username}</h1>
-      <p>{dbUser.bio}</p>
-      <h2>Posts</h2>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h3>{post.title}</h3>
-          <p>{post.content}</p>
-        </div>
-      ))}
+    <div className="bg-gray-100 min-h-screen py-10 px-6">
+      <h1 className="text-4xl font-bold text-center mb-8">User Posts</h1>
+      <div className="grid gap-6 max-w-4xl mx-auto">
+        {userPosts.map((post) => (
+          <div key={post.id} className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">{post.title}</h2>
+            <p className="text-gray-600">{post.content}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
