@@ -11,7 +11,7 @@ export default function HomePage() {
       <h1 className="text-3xl font-bold mb-4">Home Page</h1>
      
       <Image src={'https://cdn.pixabay.com/photo/2016/01/09/18/28/notepad-1130743_640.jpg'} alt="Writer tools" className="rounded-lg" width={640} height={427} />
-      <p className="text-gray-600 mt-4">Welcome to our blog! Explore our posts and enjoy the content.</p>
+      <p className="text-gray-600 mt-4"></p>
     </div>
   );
 }
